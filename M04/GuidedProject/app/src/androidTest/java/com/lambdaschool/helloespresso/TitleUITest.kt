@@ -17,7 +17,11 @@ import org.junit.runners.MethodSorters
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-class TitleUITest {
+class TitleUITest: UITestBase() {
+
+    companion object {
+        const val TITLE_TEXT = "This Is My Title"
+    }
 
     @Rule // JUnit test rule
     @JvmField // Allows for compatibility with kotlin
@@ -26,14 +30,28 @@ class TitleUITest {
     @Test
     fun a_changeTitle_sameActivity() {
         // Setup
-        val titleText = "This Is My Title"
         onView(withId(R.id.title_input))
-            .perform(typeText(titleText), closeSoftKeyboard())
+            .perform(typeText(TITLE_TEXT), closeSoftKeyboard())
 
         // Execute
         onView(withId(R.id.change_title_button)).perform(click())
 
         // Check
-        onView(withId(R.id.title_view)).check(matches(withText(titleText)))
+        onView(withId(R.id.title_view)).check(matches(withText(TITLE_TEXT)))
+    }
+
+    @Test
+    fun b_changeTitle_sameActivity() {
+        // Setup
+        onView(withId(R.id.title_input))
+            .perform(typeText(TITLE_TEXT), closeSoftKeyboard())
+
+        // Execute
+        onView(withId(R.id.pass_title_button)).perform(click())
+
+        // Check
+        onView(withId(R.id.show_title_view)).check(matches(withText(TITLE_TEXT)))
+        viewPressBack()
+        //onView(withId(R.id.title_view)).check(matches(withText(TITLE_TEXT)))
     }
 }
